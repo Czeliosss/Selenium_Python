@@ -1,2 +1,3 @@
-Starting course
-Course day 2
+- Starting course
+- Course day 2 
+- Course day 3 - Refactor PositiveLoginPage.py into pytest automation test cases
