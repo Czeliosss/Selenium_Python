@@ -1,6 +1,6 @@
 #Import selenium
 from selenium import webdriver
-from tests.testSettings import *
+from testSettings import *
 import time
 from selenium.webdriver.common.by import By
 import pytest
