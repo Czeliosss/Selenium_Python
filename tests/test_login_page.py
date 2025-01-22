@@ -1,6 +1,6 @@
 #Import selenium
 from selenium import webdriver
-from testSettings import *
+from tests.testSettings import *
 import time
 from selenium.webdriver.common.by import By
 import pytest
@@ -25,9 +25,12 @@ def driver():
     yield driver
     driver.quit()
     
+@pytest.mark.positive
 def test_login_page_url(driver):
     assert LOGIN_PAGE_URL in driver.current_url    
-    
+
+@pytest.mark.positive
+@pytest.mark.login
 def test_positive_login(driver):
     #Login locators
     loginLocator = driver.find_element(By.ID, "username")
@@ -37,7 +40,6 @@ def test_positive_login(driver):
     #Enter login & password
     loginLocator.send_keys(CORRECT_USERNAME)
     passwordLocator.send_keys(CORRECT_PASSWORD)
-    time.sleep(1)
     loginButtonLocator.click()
 
     #Check if the login was successful
@@ -50,6 +52,8 @@ def test_positive_login(driver):
 
     assert logoutLocator.is_displayed()
 
+@pytest.mark.negative
+@pytest.mark.login
 def test_invalid_login(driver):
     #Login locators
     loginLocator = driver.find_element(By.ID, "username")
@@ -59,15 +63,17 @@ def test_invalid_login(driver):
     #Enter invalid login
     loginLocator.send_keys(INCORRECT_USERNAME)
     passwordLocator.send_keys(CORRECT_PASSWORD)
-    time.sleep(1)
     loginButtonLocator.click()
 
     #Check if the error message is displayed
-    errorLocator = driver.find_element(By.XPATH, "//div[@id='error']")
+    time.sleep(2)
+    errorLocator = driver.find_element(By.ID, "error")
 
     assert INVALID_LOGIN_TEXT in errorLocator.text
     assert errorLocator.is_displayed()
-    
+
+@pytest.mark.negative
+@pytest.mark.login
 def test_invalid_password(driver):
     
     #Login locators
@@ -78,11 +84,11 @@ def test_invalid_password(driver):
     #Enter invalid login
     loginLocator.send_keys(CORRECT_USERNAME)
     passwordLocator.send_keys(INCORRECT_PASSWORD)
-    time.sleep(1)
     loginButtonLocator.click()
 
     #Check if the error message is displayed
-    errorLocator = driver.find_element(By.XPATH, "//div[@id='error']")
+    time.sleep(2)
+    errorLocator = driver.find_element(By.ID, "error")
 
     assert INVALID_PASSWORD_TEXT in errorLocator.text
     assert errorLocator.is_displayed()
