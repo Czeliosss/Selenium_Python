@@ -54,41 +54,23 @@ def test_positive_login(driver):
 
 @pytest.mark.negative
 @pytest.mark.login
-def test_invalid_login(driver):
+@pytest.mark.parametrize("username, password, expected_error",
+                         [(INCORRECT_USERNAME, CORRECT_PASSWORD, INVALID_LOGIN_TEXT),
+                          (CORRECT_USERNAME, INCORRECT_PASSWORD, INVALID_PASSWORD_TEXT)])
+def test_invalid_credentials(driver, username, password, expected_error):
     #Login locators
     loginLocator = driver.find_element(By.ID, "username")
     passwordLocator = driver.find_element(By.ID, "password")
     loginButtonLocator = driver.find_element(By.ID, "submit")
     
     #Enter invalid login
-    loginLocator.send_keys(INCORRECT_USERNAME)
-    passwordLocator.send_keys(CORRECT_PASSWORD)
+    loginLocator.send_keys(username)
+    passwordLocator.send_keys(password)
     loginButtonLocator.click()
 
     #Check if the error message is displayed
     time.sleep(2)
     errorLocator = driver.find_element(By.ID, "error")
 
-    assert INVALID_LOGIN_TEXT in errorLocator.text
-    assert errorLocator.is_displayed()
-
-@pytest.mark.negative
-@pytest.mark.login
-def test_invalid_password(driver):
-    
-    #Login locators
-    loginLocator = driver.find_element(By.ID, "username")
-    passwordLocator = driver.find_element(By.ID, "password")
-    loginButtonLocator = driver.find_element(By.ID, "submit")
-    
-    #Enter invalid login
-    loginLocator.send_keys(CORRECT_USERNAME)
-    passwordLocator.send_keys(INCORRECT_PASSWORD)
-    loginButtonLocator.click()
-
-    #Check if the error message is displayed
-    time.sleep(2)
-    errorLocator = driver.find_element(By.ID, "error")
-
-    assert INVALID_PASSWORD_TEXT in errorLocator.text
+    assert expected_error in errorLocator.text
     assert errorLocator.is_displayed()
