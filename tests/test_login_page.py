@@ -4,28 +4,9 @@ from testSettings import *
 import time
 from selenium.webdriver.common.by import By
 import pytest
-
-
-@pytest.fixture
-def driver():
-    #Open browser
-    driver = webdriver.Chrome()
-
-    #Open the website
-    driver.get(TARGET_URL)
-
-    #Click on the Practice link
-    practiceButtonLocator = driver.find_element(By.ID, "menu-item-20")
-    practiceButtonLocator.click()
-
-    #Select the Test Login Page
-    testLoginPageLocator = driver.find_element(By.XPATH, "//*[@id='loop-container']/div/article/div[2]/div[1]/div[1]/p/a")
-    testLoginPageLocator.click()
-    
-    yield driver
-    driver.quit()
     
 @pytest.mark.positive
+@pytest.mark.redirect
 def test_login_page_url(driver):
     assert LOGIN_PAGE_URL in driver.current_url    
 
