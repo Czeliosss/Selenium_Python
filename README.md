@@ -1,10 +1,10 @@
-#Course test automation on https://practicetestautomation.com/
+# Course test automation on https://practicetestautomation.com/
 
 Required libraries - requirements.txt
 
 Test cases are ran on **Chrome**, **Firefox** and **Edge**
 
-##Viable extra arguments to run test cases:
+## Viable extra arguments to run test cases:
 ```
 -m [marker] | positive, negative, redirect, login
 -n=4 
