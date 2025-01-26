@@ -4,10 +4,10 @@ from selenium.webdriver.common.by import By
 import pytest
 
 
-@pytest.fixture
+@pytest.fixture(params=["chrome", "firefox", "edge"])
 def driver(request):
-    # Select and open browser
-    browser = request.config.getoption("--browser")
+    # Select and create driver
+    browser = request.param
     print(f"Creating {browser} driver")
     if browser == "chrome":
         driver = webdriver.Chrome()
@@ -18,16 +18,7 @@ def driver(request):
     else:
         raise TypeError("Incorrect browser settings")
 
-    # Open the website
-    driver.get(TARGET_URL)
-
-    # Click on the Practice link
-    practiceButtonLocator = driver.find_element(By.ID, "menu-item-20")
-    practiceButtonLocator.click()
-
-    # Select the Test Login Page
-    testLoginPageLocator = driver.find_element(By.XPATH,"//*[@id='loop-container']/div/article/div[2]/div[1]/div[1]/p/a")
-    testLoginPageLocator.click()
+    driver.implicitly_wait(10)
 
     yield driver
     driver.quit()
